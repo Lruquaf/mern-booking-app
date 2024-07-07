@@ -57,3 +57,17 @@ export const logout = async () => {
 		throw new Error("Error during logout!");
 	}
 };
+
+export const addTavern = async (tavernFormData: FormData) => {
+	const response = await fetch(`${API_BASE_URL}/api/my-taverns`, {
+		method: "POST",
+		credentials: "include",
+		body: tavernFormData,
+	});
+
+	if (!response.ok) {
+		throw new Error("Failed to add tavern");
+	}
+
+	return response.json();
+};

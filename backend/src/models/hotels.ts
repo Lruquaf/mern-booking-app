@@ -26,7 +26,7 @@ const tavernSchema = new mongoose.Schema<TavernType>({
 	capacity: { type: Number, required: true },
 	facilities: [{ type: String, required: true }],
 	pricePerNight: { type: Number, required: true },
-	starRating: { type: Number, required: true, min: 1, max: 1 },
+	starRating: { type: Number, required: true, min: 1, max: 5 },
 	imageUrls: [{ type: String, required: true }],
 	lastUpdated: { type: Date, required: true },
 });
