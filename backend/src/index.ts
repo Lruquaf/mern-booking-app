@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express, { urlencoded, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
@@ -28,6 +28,10 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-taverns", myTaverns);
+
+app.get("*", (req: Request, res: Response) => {
+	res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
 
 app.listen(5000, () => {
 	console.log("Server running on port 5000...");
