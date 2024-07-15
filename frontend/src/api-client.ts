@@ -1,6 +1,6 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { TavernType } from "../../backend/src/models/taverns";
+import { TavernType } from "../../backend/src/shared/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 

@@ -1,20 +1,5 @@
 import mongoose from "mongoose";
-
-export type TavernType = {
-	_id: string;
-	userId: string;
-	name: string;
-	city: string;
-	country: string;
-	description: string;
-	type: string;
-	capacity: number;
-	pricePerNight: number;
-	facilities: string[];
-	starRating: number;
-	imageUrls: string[];
-	lastUpdated: Date;
-};
+import { TavernType } from "../shared/types";
 
 const tavernSchema = new mongoose.Schema<TavernType>({
 	userId: { type: String, required: true },

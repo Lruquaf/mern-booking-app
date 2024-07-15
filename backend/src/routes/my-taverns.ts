@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 import cloudinary from "cloudinary";
-import Tavern, { TavernType } from "../models/taverns";
+import Tavern from "../models/taverns";
 import verifyToken from "../middleware/auth";
 import { body } from "express-validator";
+import { TavernType } from "../shared/types";
 
 const router = express.Router();
 
