@@ -44,3 +44,20 @@ test("should allow user to add a tavern", async ({ page }) => {
     await page.getByRole("button", { name: "Save" }).click();
     await expect(page.getByText("Tavern saved successfully!")).toBeVisible();
 });
+
+test("should display taverns", async ({ page }) => {
+    await page.goto(`${UI_URL}/my-taverns`);
+    await expect(page.getByText("Test Tavern")).toBeVisible();
+    await expect(
+        page.getByText("Test Description Test Description")
+    ).toBeVisible();
+    await expect(page.getByText("Valdarr, Nord")).toBeVisible();
+    await expect(page.getByText("Warrior Caravanserai")).toBeVisible();
+    await expect(page.getByText("100 denar (per night)")).toBeVisible();
+    await expect(page.getByText("Capacity: 100")).toBeVisible();
+    await expect(page.getByText("5 Star Rating")).toBeVisible();
+    await expect(
+        page.getByRole("link", { name: "View Details" })
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Add Tavern" })).toBeVisible();
+});

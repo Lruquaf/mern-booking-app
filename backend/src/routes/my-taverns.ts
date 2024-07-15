@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 import cloudinary from "cloudinary";
-import Tavern, { TavernType } from "../models/hotels";
+import Tavern, { TavernType } from "../models/taverns";
 import verifyToken from "../middleware/auth";
 import { body } from "express-validator";
 
@@ -60,5 +60,15 @@ router.post(
 		}
 	}
 );
+
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+	try {
+		const taverns = await Tavern.find({ userId: req.userId });
+		res.json(taverns);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Error fetching taverns" });
+	}
+});
 
 export default router;

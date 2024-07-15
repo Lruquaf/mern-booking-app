@@ -1,5 +1,6 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
+import { TavernType } from "../../backend/src/models/taverns";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -67,6 +68,19 @@ export const addTavern = async (tavernFormData: FormData) => {
 
 	if (!response.ok) {
 		throw new Error("Failed to add tavern");
+	}
+
+	return response.json();
+};
+
+export const fetchMyTaverns = async (): Promise<TavernType[]> => {
+	const response = await fetch(`${API_BASE_URL}/api/my-taverns`, {
+		method: "GET",
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("Error fetching taverns");
 	}
 
 	return response.json();
