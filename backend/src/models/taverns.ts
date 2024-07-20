@@ -19,3 +19,5 @@ const tavernSchema = new mongoose.Schema<TavernType>({
 const Tavern = mongoose.model<TavernType>("Tavern", tavernSchema);
 
 export default Tavern;
+
+
