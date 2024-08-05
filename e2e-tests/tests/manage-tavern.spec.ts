@@ -61,3 +61,18 @@ test("should display taverns", async ({ page }) => {
     ).toBeVisible();
     await expect(page.getByRole("link", { name: "Add Tavern" })).toBeVisible();
 });
+
+test("should allow user to edit a tavern", async ({ page }) => {
+    await page.goto(`${UI_URL}/my-taverns`);
+    await page.getByRole("link", { name: "View Details" }).first().click();
+    await page.waitForSelector('[name="name"]', { state: "attached" });
+    await expect(page.locator('[name="name"]')).toHaveValue("Test Tavern");
+    await page.locator('[name="name"]').fill("Test Tavern EDITED");
+    await page.getByRole("button", { name: "Save" }).click();
+    await expect(page.getByText("Tavern saved successfully!")).toBeVisible();
+    await expect(page.locator('[name="name"]')).toHaveValue(
+        "Test Tavern EDITED"
+    );
+    await page.locator('[name="name"]').fill("Test Tavern");
+    await page.getByRole("button", { name: "Save" }).click();
+});

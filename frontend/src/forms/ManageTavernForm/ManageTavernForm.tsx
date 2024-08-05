@@ -3,6 +3,8 @@ import DetailsSection from "./DetailsSection";
 import TypeSection from "./TypeSection";
 import FacilitiesSection from "./FacilitiesSection";
 import ImageSection from "./ImageSection";
+import { TavernType } from "../../../../backend/src/shared/types";
+import { useEffect } from "react";
 
 export type TavernFormData = {
 	name: string;
@@ -15,19 +17,28 @@ export type TavernFormData = {
 	capacity: number;
 	facilities: string[];
 	imageFiles: FileList;
+	imageUrls: string[];
 };
 
 type Props = {
+	tavern?: TavernType;
 	onSave: (tavernFormData: FormData) => void;
 	isLoading: boolean;
 };
 
-const ManageTavernForm = ({ onSave, isLoading }: Props) => {
+const ManageTavernForm = ({ onSave, isLoading, tavern }: Props) => {
 	const formMethods = useForm<TavernFormData>();
-	const { handleSubmit } = formMethods;
+	const { handleSubmit, reset } = formMethods;
+
+	useEffect(() => {
+		reset(tavern);
+	}, [tavern, reset]);
 
 	const onSubmit = handleSubmit((formDataJSON: TavernFormData) => {
 		const formData = new FormData();
+		if (tavern) {
+			formData.append("tavernId", tavern._id);
+		}
 		formData.append("name", formDataJSON.name);
 		formData.append("country", formDataJSON.country);
 		formData.append("city", formDataJSON.city);
@@ -39,6 +50,13 @@ const ManageTavernForm = ({ onSave, isLoading }: Props) => {
 		formDataJSON.facilities.forEach((facility, index) => {
 			formData.append(`facilities[${index}]`, facility);
 		});
+
+		if (formDataJSON.imageUrls) {
+			formDataJSON.imageUrls.forEach((url, index) => {
+				formData.append(`imageUrls[${index}]`, url);
+			});
+		}
+
 		Array.from(formDataJSON.imageFiles).forEach((imageFile) => {
 			formData.append("imageFiles", imageFile);
 		});

@@ -85,3 +85,35 @@ export const fetchMyTaverns = async (): Promise<TavernType[]> => {
 
 	return response.json();
 };
+
+export const fetchMyTavernById = async (
+	tavernId: string
+): Promise<TavernType> => {
+	const response = await fetch(`${API_BASE_URL}/api/my-taverns/${tavernId}`, {
+		method: "GET",
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("Error fetching tavern");
+	}
+
+	return response.json();
+};
+
+export const updateMyTavernById = async (tavernFormData: FormData) => {
+	const response = await fetch(
+		`${API_BASE_URL}/api/my-taverns/${tavernFormData.get("tavernId")}`,
+		{
+			method: "PUT",
+			body: tavernFormData,
+			credentials: "include",
+		}
+	);
+
+	if (!response.ok) {
+		throw new Error("Failed to update tavern");
+	}
+
+	return response.json();
+};

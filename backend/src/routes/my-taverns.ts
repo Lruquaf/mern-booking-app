@@ -39,13 +39,7 @@ router.post(
 			const imageFiles = req.files as Express.Multer.File[];
 			const newTavern: TavernType = req.body;
 
-			const uploadPromises = imageFiles.map(async (image) => {
-				const b64 = Buffer.from(image.buffer).toString("base64");
-				let dataUri = "data:" + image.mimetype + ";base64," + b64;
-				const res = await cloudinary.v2.uploader.upload(dataUri);
-				return res.url;
-			});
-			const imageUrls = await Promise.all(uploadPromises);
+			const imageUrls = await uploadImages(imageFiles);
 
 			newTavern.imageUrls = imageUrls;
 			newTavern.lastUpdated = new Date();
@@ -65,11 +59,71 @@ router.post(
 router.get("/", verifyToken, async (req: Request, res: Response) => {
 	try {
 		const taverns = await Tavern.find({ userId: req.userId });
-		res.json(taverns);
+		return res.json(taverns);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ message: "Error fetching taverns" });
 	}
 });
 
+router.get("/:tavernId", verifyToken, async (req: Request, res: Response) => {
+	const id = req.params.tavernId.toString();
+	try {
+		const tavern = await Tavern.findOne({ _id: id, userId: req.userId });
+		return res.json(tavern);
+	} catch (error) {
+		return res.status(500).json({ message: "Error fetching tavern" });
+	}
+});
+
+router.put(
+	"/:tavernId",
+	verifyToken,
+	upload.array("imageFiles"),
+	async (req: Request, res: Response) => {
+		const id = req.params.tavernId.toString();
+		try {
+			const updatedTavern: TavernType = req.body;
+			updatedTavern.lastUpdated = new Date();
+
+			const tavern = await Tavern.findByIdAndUpdate(
+				{
+					_id: id,
+					userId: req.userId,
+				},
+				updatedTavern,
+				{ new: true }
+			);
+
+			if (!tavern) {
+				return res.status(404).json({ message: "Tavern not found" });
+			}
+
+			const files = req.files as Express.Multer.File[];
+			const updatedImageUrls = await uploadImages(files);
+
+			tavern.imageUrls = [
+				...updatedImageUrls,
+				...(updatedTavern.imageUrls || []),
+			];
+
+			await tavern.save();
+			res.status(201).json(tavern);
+		} catch (error) {
+			return res.status(500).json({ message: "Something went wrong" });
+		}
+	}
+);
+
 export default router;
+
+async function uploadImages(imageFiles: Express.Multer.File[]) {
+	const uploadPromises = imageFiles.map(async (image) => {
+		const b64 = Buffer.from(image.buffer).toString("base64");
+		let dataUri = "data:" + image.mimetype + ";base64," + b64;
+		const res = await cloudinary.v2.uploader.upload(dataUri);
+		return res.url;
+	});
+	const imageUrls = await Promise.all(uploadPromises);
+	return imageUrls;
+}

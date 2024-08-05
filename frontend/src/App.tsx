@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import AddTavern from "./pages/AddTavern";
 import { useAppContext } from "./contexts/AppContext";
 import MyTaverns from "./pages/MyTaverns";
+import EditTavern from "./pages/EditTavern";
 
 const App = () => {
 	const { isLoggedIn } = useAppContext();
@@ -67,6 +68,18 @@ const App = () => {
 							element={
 								<Layout>
 									<MyTaverns />
+								</Layout>
+							}
+						></Route>
+					</>
+				)}
+				{isLoggedIn && (
+					<>
+						<Route
+							path="/edit-tavern/:tavernId"
+							element={
+								<Layout>
+									<EditTavern />
 								</Layout>
 							}
 						></Route>
