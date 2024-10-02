@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { v2 as cloudinary } from "cloudinary";
 import myTaverns from "./routes/my-taverns";
+import taverns from "./routes/taverns";
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-taverns", myTaverns);
+app.use("/api/taverns", taverns);
 
 app.get("*", (req: Request, res: Response) => {
 	res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
