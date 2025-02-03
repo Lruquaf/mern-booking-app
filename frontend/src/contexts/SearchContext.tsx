@@ -12,7 +12,6 @@ type SearchContext = {
 		checkIn: Date,
 		checkOut: Date,
 		personCount: number,
-		tavernId: string
 	) => void;
 };
 
@@ -34,13 +33,15 @@ export const SearchContextProvider = ({
 		checkIn: Date,
 		checkOut: Date,
 		personCount: number,
-		tavernId: string
+		tavernId?: string
 	) => {
 		setDestination(destination);
 		setCheckIn(checkIn);
 		setCheckOut(checkOut);
 		setPersonCount(personCount);
-		setTavernId(tavernId);
+		if (tavernId) {
+			setTavernId(tavernId);
+		}
 	};
 
 	return (

@@ -11,6 +11,7 @@ import AddTavern from "./pages/AddTavern";
 import { useAppContext } from "./contexts/AppContext";
 import MyTaverns from "./pages/MyTaverns";
 import EditTavern from "./pages/EditTavern";
+import Search from "./pages/Search";
 
 const App = () => {
 	const { isLoggedIn } = useAppContext();
@@ -29,7 +30,7 @@ const App = () => {
 					path="/search"
 					element={
 						<Layout>
-							<p>Search Page</p>
+							<Search />
 						</Layout>
 					}
 				/>
