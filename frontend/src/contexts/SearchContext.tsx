@@ -11,7 +11,7 @@ type SearchContext = {
 		destination: string,
 		checkIn: Date,
 		checkOut: Date,
-		personCount: number,
+		personCount: number
 	) => void;
 };
 
@@ -22,11 +22,27 @@ type SearchContextProviderProps = { children: React.ReactNode };
 export const SearchContextProvider = ({
 	children,
 }: SearchContextProviderProps) => {
-	const [destination, setDestination] = useState<string>("");
-	const [checkIn, setCheckIn] = useState<Date>(new Date());
-	const [checkOut, setCheckOut] = useState<Date>(new Date());
-	const [personCount, setPersonCount] = useState<number>(1);
-	const [tavernId, setTavernId] = useState<string>("");
+	const [destination, setDestination] = useState<string>(
+		() => sessionStorage.getItem("destination") || ""
+	);
+	const [checkIn, setCheckIn] = useState<Date>(
+		() =>
+			new Date(
+				sessionStorage.getItem("checkIn") || new Date().toISOString()
+			)
+	);
+	const [checkOut, setCheckOut] = useState<Date>(
+		() =>
+			new Date(
+				sessionStorage.getItem("checkOut") || new Date().toISOString()
+			)
+	);
+	const [personCount, setPersonCount] = useState<number>(() =>
+		parseInt(sessionStorage.getItem("personCount") || "1")
+	);
+	const [tavernId, setTavernId] = useState<string>(
+		() => sessionStorage.getItem("tavernId") || ""
+	);
 
 	const saveSearchValues = (
 		destination: string,
@@ -41,6 +57,14 @@ export const SearchContextProvider = ({
 		setPersonCount(personCount);
 		if (tavernId) {
 			setTavernId(tavernId);
+		}
+
+		sessionStorage.setItem("destination", destination);
+		sessionStorage.setItem("checkIn", checkIn.toISOString());
+		sessionStorage.setItem("checkOut", checkOut.toISOString());
+		sessionStorage.setItem("personCount", personCount.toString());
+		if (tavernId) {
+			sessionStorage.setItem("tavernId", tavernId);
 		}
 	};
 

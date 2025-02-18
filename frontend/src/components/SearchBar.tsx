@@ -34,6 +34,14 @@ const SearchBar = () => {
 		setCheckIn(new Date());
 		setCheckOut(new Date());
 		setPersonCount(1);
+
+		searchContext.saveSearchValues("", new Date(), new Date(), 1);
+
+		sessionStorage.removeItem("destination");
+		sessionStorage.removeItem("checkIn");
+		sessionStorage.removeItem("checkOut");
+		sessionStorage.removeItem("personCount");
+		sessionStorage.removeItem("tavernId");
 	};
 
 	const minDate = new Date();

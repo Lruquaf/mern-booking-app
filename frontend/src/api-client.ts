@@ -164,3 +164,18 @@ export const searchTaverns = async (
 
 	return response.json();
 };
+
+export const fetchTavernById = async (
+	tavernId: string
+): Promise<TavernType> => {
+	const response = await fetch(`${API_BASE_URL}/api/taverns/${tavernId}`, {
+		method: "GET",
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("Failed to fetch tavern");
+	}
+
+	return response.json();
+};

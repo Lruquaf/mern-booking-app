@@ -29,7 +29,7 @@ const SearchResultsCard = ({ tavern }: Props) => {
 					</div>
 					<div>
 						<Link
-							to={`/details/${tavern._id}`}
+							to={`/detail/${tavern._id}`}
 							className="text-2xl font-bold cursor-pointer"
 						>
 							{tavern.name}
@@ -56,7 +56,7 @@ const SearchResultsCard = ({ tavern }: Props) => {
 							{tavern.pricePerNight} denar (per night)
 						</span>
 						<Link
-							to={`/details/${tavern._id}`}
+							to={`/detail/${tavern._id}`}
 							className="bg-blue-700 text-white h-full p-2 font-bold text-xl max-w-fit hover:bg-blue-300 rounded"
 						>
 							View Details

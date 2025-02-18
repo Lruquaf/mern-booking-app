@@ -25,3 +25,14 @@ test("should allow user to search the taverns", async ({ page }) => {
     await expect(page.getByText("taverns found in Valdarr")).toBeVisible();
     await expect(page.getByText("Test Tavern").first()).toBeVisible();
 });
+
+test("should show tavern details", async ({ page }) => {
+    await page.goto(UI_URL);
+
+    await page.getByPlaceholder("Next stop of the campaign?").fill("Valdarr");
+    await page.getByRole("button", { name: "Search" }).click();
+
+    await page.getByText("Test Tavern").first().click();
+    await expect(page).toHaveURL(/detail/);
+    await expect(page.getByRole("button", { name: "Book now" })).toBeVisible();
+});
